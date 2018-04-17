@@ -1,5 +1,8 @@
 function GetProducts() {
-    var baseurl = 'http://localhost/OnlineShoppingProject/';
+//    var baseurl = 'http://localhost/OnlineShoppingProject/';
+    var baseurl = 'https://onlinetoy.azurewebsites.net/';
+
+    
     var geturl = baseurl + 'index.php/Products_ctl/products';
     var imgurl = baseurl + '/images/';
     var xhttp = new XMLHttpRequest();
