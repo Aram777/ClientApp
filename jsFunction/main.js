@@ -1,6 +1,7 @@
+let lg_urs_stat=2;
 function GetProducts() {
-//    var baseurl = 'http://localhost/OnlineShoppingProject/';
-    var baseurl = 'https://onlinetoy.azurewebsites.net/';
+   var baseurl = 'http://localhost/OnlineShoppingProject/';
+//   var baseurl = 'onlinetoy.azurewebsites.net/';
 
     
     var geturl = baseurl + 'index.php/Products_ctl/products';
