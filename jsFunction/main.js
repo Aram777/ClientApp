@@ -1,7 +1,8 @@
 let usrId = 2;
 //var baseurl = 'http://localhost/OnlineShoppingProject/';
 function BaseUrl() {
-    return 'http://localhost/OnlineShoppingProject/';
+    return 'https://onlinetoy.azurewebsites.net/';
+    //return 'http://localhost/OnlineShoppingProject/';
 }
 function userid() {
     return 2;
