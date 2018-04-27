@@ -16,9 +16,9 @@ function PricecatSave1() {
 }
 
 function BaseUrl() {
-    //return 'https://onlinetoy.azurewebsites.net/';
-    return 'http://localhost/OnlineShoppingProject/';
-    // return 'http://www.students.oamk.fi/~t7abar00/';
+    return 'https://onlinetoy.azurewebsites.net/';
+    //return 'http://localhost/OnlineShoppingProject/';
+    //return 'http://www.students.oamk.fi/~t7abar00/';
 }
 function userid() {
     return 2;
@@ -53,9 +53,9 @@ function adminPriceCat() {
 
     span = document.getElementById('adminclose');
     modal.style.display = "block";
-       span.onclick = function () {
-          modal.style.display = "none";
-      } 
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
     showDataJsn('Pricecategory_ctl', 'pricecategory', null, null, PriceCatShow);
 
 }
@@ -78,13 +78,15 @@ function adminProductCat() {
 //end of Admin Functions
 //Product category Functions
 function ProdCatShow(jsonData) {
+    var enbBut = '';
     var elmtxt = '<button onclick=" PriceCatInsert() ">Add new</button> <br>' +
-    '<table " >' +
-    '<tr><td>' +
-    '<table style=" table-layout: fixed;" id="BaseShowTbl" class="table table-hover table-bordered table-striped " >' +
+        '<table " >' +
+        '<tr><td>' +
+        '<table style=" table-layout: fixed;" id="BaseShowTbl" class="table table-hover table-bordered table-striped " >' +
         '<tr class="info">' +
         '<th>Product Category ID</th><th>Description</th><th>Edit</th><th>Delete</th>';
     for (x in jsonData) {
+        enbBut = (jsonData[x].Chkuse > 0) ? 'disabled title="This Id is in use"' : 'enabled';
         elmtxt +=
             '<tr><td>' +
             jsonData[x].ProductsCategoryId +
@@ -92,11 +94,14 @@ function ProdCatShow(jsonData) {
             jsonData[x].PrdCatDescription +
             '</td>' +
 
-            '<td> <a href="javascript:ProdCatEdit(' + jsonData[x].ProductsCategoryId + ',' + jsonData[x].PrdCatDescription + ');"> <button class="btn btn-primary"><span class="glyphicon glyphicon-edit"></button></a></td>' +
-            '<td> <a href="javascript:ProdCatDelete(' + jsonData[x].ProductsCategoryId + ');"> <button class="btn btn-primary"><span class="glyphicon glyphicon-remove"></button></a></td>' +
+            '<td> <a href="javascript:ProdCatEdit(' + jsonData[x].ProductsCategoryId + ',' + jsonData[x].PrdCatDescription + ');"> <button class="btn btn-primary" ' +
+            '><span class="glyphicon glyphicson-edit"></button></a></td>' +
+            '<td> <a href="javascript:ProdCatDelete(' + jsonData[x].ProductsCategoryId + ');"> <button class="btn btn-primary" ' +
+            enbBut +
+            '><span class="glyphicon glyphicon-remove"></button></a></td>' +
             '</tr>';
     }
-    elmtxt += '</table></td> </tr></table>' ;
+    elmtxt += '</table></td> </tr></table>';
     document.getElementById("results_dyn").innerHTML = elmtxt;
 }
 
@@ -135,16 +140,17 @@ function PriceCatInsert() {
 
 }
 function ProdCatDelete(ProductsCategoryId) {
-    let url = BaseUrl() + 'index.php/Productscategory_ctl/productscategory/ProductsCategoryId/' + ProductsCategoryId.toString();
-    var xhttp = new XMLHttpRequest();
-    xhttp.open('DELETE', url, true);
-    xhttp.onreadystatechange = function () {
-        if (xhttp.readyState == 4 && xhttp.status == 200) {
-            adminProdCat();
-        }
-    };
-    xhttp.send();
-
+    if (confirm("Are you sure to delete this record??")) {
+        let url = BaseUrl() + 'index.php/Productscategory_ctl/productscategory/ProductsCategoryId/' + ProductsCategoryId.toString();
+        var xhttp = new XMLHttpRequest();
+        xhttp.open('DELETE', url, true);
+        xhttp.onreadystatechange = function () {
+            if (xhttp.readyState == 4 && xhttp.status == 200) {
+                adminProductCat();
+            }
+        };
+        xhttp.send();
+    }
 }
 
 function ProdcatSave(mtdflag) {
