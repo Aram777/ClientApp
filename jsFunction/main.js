@@ -1,59 +1,183 @@
 let usrId = 2;
 //var baseurl = 'http://localhost/OnlineShoppingProject/';
+
+function PricecatSave1() {
+
+    let url = 'http://localhost/OnlineShoppingProject/index.php/Pricecategory_ctl/pricecategory/PriceCategoryId/9';
+    var xhttp = new XMLHttpRequest();
+    xhttp.open('DELETE', url, true);
+    xhttp.onreadystatechange = function () {
+        if (xhttp.readyState == 4 && xhttp.status == 200) {
+            document.getElementById("id0").innerHTML = xhttp.responseText;
+        }
+    };
+    xhttp.send();
+
+}
+
 function BaseUrl() {
-    return 'https://onlinetoy.azurewebsites.net/';
-    //return 'http://localhost/OnlineShoppingProject/';
+    //return 'https://onlinetoy.azurewebsites.net/';
+    return 'http://localhost/OnlineShoppingProject/';
+    // return 'http://www.students.oamk.fi/~t7abar00/';
 }
 function userid() {
     return 2;
 }
 function showDataJsn(ctlName, resName, prmName, prmVal, fncName) {
-    let url = 'index.php/' + ctlName + '/' + resName;
+    let url = BaseUrl() + 'index.php/' + ctlName + '/' + resName;
     if (!(prmName === undefined || prmName === null)) {
         url += '/' + prmName + '/' + prmVal;
     }
-    GetRequestfn(url, fncName);
-}
-
-function GetRequestfn(requrl, cFunction) {
-    var geturl = BaseUrl() + requrl;
-    var xhttp;
-    xhttp = new XMLHttpRequest();
+    var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             jsonData = JSON.parse(xhttp.responseText);
-            cFunction(jsonData);
+            fncName(jsonData);
         }
     };
-    xhttp.open("GET", geturl, true);
+    xhttp.open("GET", url, true);
+    //  xhttp.setRequestHeader('Content-type', 'application/json; charset=utf-8');
     xhttp.send();
+
+
 }
-function SendDataJsn(ctlName, resName, prmName, prmVal, frmdata, actMtd, fncName) {
-    let url = 'index.php/' + ctlName + '/' + resName;
-    if (!(prmName === undefined || prmName === null)) {
-        url += '/' + prmName + '/' + prmVal;
+
+
+//Admin Functions
+function adminPriceCat() {
+    document.getElementById("results_dyn").innerHTML = "";
+    document.getElementById("AdminPageHeader").innerHTML = "Price Category";
+    document.getElementById("AdminPageContent").style.width = "50%";
+    document.getElementById("AdminPageContent").style.height = "60%";
+    modal = document.getElementById('AdminPage');
+
+    span = document.getElementById('adminclose');
+    modal.style.display = "block";
+       span.onclick = function () {
+          modal.style.display = "none";
+      } 
+    showDataJsn('Pricecategory_ctl', 'pricecategory', null, null, PriceCatShow);
+
+}
+function adminProductCat() {
+    document.getElementById("results_dyn").innerHTML = "";
+    document.getElementById("AdminPageHeader").innerHTML = "Product Category";
+    document.getElementById("AdminPageContent").style.width = "50%";
+    document.getElementById("AdminPageContent").style.height = "70%";
+    modal = document.getElementById('AdminPage');
+
+    span = document.getElementById('adminclose');
+    modal.style.display = "block";
+    span.onclick = function () {
+        modal.style.display = "none";
     }
-    PostRequestfn(url, fncName, actMtd);
+    showDataJsn('Productscategory_ctl', 'productscategory', null, null, ProdCatShow);
+
 }
-function PostRequestfn(requrl, cFunction) {
-    var geturl = BaseUrl() + requrl;
-    var xhttp;
-    xhttp = new XMLHttpRequest();
+
+//end of Admin Functions
+//Product category Functions
+function ProdCatShow(jsonData) {
+    var elmtxt = '<button onclick=" PriceCatInsert() ">Add new</button> <br>' +
+    '<table " >' +
+    '<tr><td>' +
+    '<table style=" table-layout: fixed;" id="BaseShowTbl" class="table table-hover table-bordered table-striped " >' +
+        '<tr class="info">' +
+        '<th>Product Category ID</th><th>Description</th><th>Edit</th><th>Delete</th>';
+    for (x in jsonData) {
+        elmtxt +=
+            '<tr><td>' +
+            jsonData[x].ProductsCategoryId +
+            '</td><td> ' +
+            jsonData[x].PrdCatDescription +
+            '</td>' +
+
+            '<td> <a href="javascript:ProdCatEdit(' + jsonData[x].ProductsCategoryId + ',' + jsonData[x].PrdCatDescription + ');"> <button class="btn btn-primary"><span class="glyphicon glyphicon-edit"></button></a></td>' +
+            '<td> <a href="javascript:ProdCatDelete(' + jsonData[x].ProductsCategoryId + ');"> <button class="btn btn-primary"><span class="glyphicon glyphicon-remove"></button></a></td>' +
+            '</tr>';
+    }
+    elmtxt += '</table></td> </tr></table>' ;
+    document.getElementById("results_dyn").innerHTML = elmtxt;
+}
+
+function ProdCatEdit(ProductsCategoryId, PrdCatDescription) {
+    document.getElementById("results_dyn").innerHTML = '';
+    let elmtxt =
+
+        '<label for="">Product category Id</label>' +
+        '<br>' +
+        '<input type="text" id="ProductsCategoryId" value="' + ProductsCategoryId + '" readonly>' +
+        '<br>' +
+        '<label for="">Category description</label>' +
+        '<br>' +
+        '<input type="number" id="PrdCatDescription" value="' + PrdCatDescription + '">' +
+        '<br>' +
+        '<br>' +
+        '<button class="btn btn-success" onclick="ProdcatSave(2)">Save</button>' +
+        '<button class="btn btn-danger" onclick="adminProductCat()">Cancel</button>';
+
+    document.getElementById("results_dyn").innerHTML = elmtxt;
+
+}
+function PriceCatInsert() {
+    document.getElementById("results_dyn").innerHTML = '';
+    let elmtxt =
+
+        '<label for="">New product category </label>' +
+        '<br>' +
+        '<input type="text" id="PrdCatDescription" value="">' +
+        '<br>' +
+        '<br>' +
+        '<button class="btn btn-success" onclick="ProdcatSave(1)">Save</button>' +
+        '<button class="btn btn-danger" onclick="adminProductCat()">Cancel</button>';
+
+    document.getElementById("results_dyn").innerHTML = elmtxt;
+
+}
+function ProdCatDelete(ProductsCategoryId) {
+    let url = BaseUrl() + 'index.php/Productscategory_ctl/productscategory/ProductsCategoryId/' + ProductsCategoryId.toString();
+    var xhttp = new XMLHttpRequest();
+    xhttp.open('DELETE', url, true);
     xhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            jsonData = JSON.parse(xhttp.responseText);
-            cFunction(jsonData);
+        if (xhttp.readyState == 4 && xhttp.status == 200) {
+            adminProdCat();
         }
     };
-    xhttp.open("GET", geturl, true);
     xhttp.send();
+
+}
+
+function ProdcatSave(mtdflag) {
+    let url = BaseUrl() + 'index.php/Productscategory_ctl/productscategory';
+
+    var data2 = {};
+    if (mtdflag == 2)
+        data2.ProductsCategoryId = parseInt(document.getElementById('ProductsCategoryId').value);
+    data2.PrdCatDescription = parseFloat(document.getElementById('PrdCatDescription').value);
+
+    var jsonData = JSON.stringify(data2);
+    var xhttp = new XMLHttpRequest();
+    if (mtdflag == 2)
+        xhttp.open('PUT', url, true);
+    else
+        xhttp.open('POST', url, true);
+    xhttp.onreadystatechange = function () {
+        if (xhttp.readyState == 4 && xhttp.status == 201) {
+            adminProductCat();
+        }
+    };
+    //xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+    xhttp.send(jsonData);
 }
 
 
+//End of Product category Functions
 // Price category functions
+
 function PriceCatShow(jsonData) {
-    var elmtxt = '<table id="PriceCat" border="1">';
-    var elmtxt = '<table class="table table-hover table-bordered">' +
+    var elmtxt = '<button onclick=" PriceCatInsert() ">Add new</button> <br>' +
+        '<table id="BaseShowTbl" class="table table-hover table-bordered table ">' +
         '<tr class="info">' +
         '<th>Price Category ID</th><th>Perecent</th><th>Edit</th><th>Delete</th>';
     for (x in jsonData) {
@@ -63,40 +187,89 @@ function PriceCatShow(jsonData) {
             '</td><td> ' +
             jsonData[x].PriceCatPerecent +
             '</td>' +
-            '<td> <a href="#"><button onclick="PriceCatEditData(' + jsonData[x].PriceCategoryId + ')" class="btn btn-primary"><span class="glyphicon glyphicon-edit"></button></a></td>' +
-            '<td> <a href="#"><button class="btn btn-primary"><span class="glyphicon glyphicon-remove"></button></a></td>' +
+            '<td> <a href="javascript:PriceCatEdit(' + jsonData[x].PriceCategoryId + ',' + jsonData[x].PriceCatPerecent + ');"> <button class="btn btn-primary"><span class="glyphicon glyphicon-edit"></button></a></td>' +
+            '<td> <a href="javascript:PriceCatDelete(' + jsonData[x].PriceCategoryId + ');"> <button class="btn btn-primary"><span class="glyphicon glyphicon-remove"></button></a></td>' +
             '</tr>';
     }
     elmtxt += '</table>';
     document.getElementById("results_dyn").innerHTML = elmtxt;
 }
 
-function PriceCatEditData(PriceCategoryId) {
-    showDataJsn('Pricecategory_ctl', 'pricecategory', 'PriceCategoryId', PriceCategoryId, PriceCatEditForm);
-}
-function PriceCatEditForm(jsonData) {
-    let elmtxt=
-    '<form id="PrcCatDataForm">'+
-    '<label for="">Price category Id</label>'+
-    '<br>'+
-    '<input type="text" name="PriceCategoryId" value="'+jsonData[0].PriceCategoryId+'" readonly>'+
-    '<br>'+
-    '<label for="">Perecent</label>'+
-    '<br>'+
-    '<input type="number" name="PriceCatPerecent" value="'+jsonData[0].PriceCatPerecent+'">'+
-    '<br>'+
-    '<br>'+
-    '<button class="btn btn-success" onclick="AddUser()">Save</button>'+
-    '<button class="btn btn-danger" onclick="AddUser()">Cancel</button>'+
-    '</form>';
-    document.getElementById("results_dyn").innerHTML = elmtxt;
-}
-function PriceCatEditSave(){
-    var form = document.getElementById('PrcCatDataForm');
-    var formData = new FormData(form);
-    SendDataJsn('Pricecategory_ctl', 'pricecategory', null, null, formData, 'PUT', fncName) ;
+function PriceCatEdit(PriceCategoryId, PriceCatPerecent) {
+    document.getElementById("results_dyn").innerHTML = '';
+    let elmtxt =
 
-    
+        '<label for="">Price category Id</label>' +
+        '<br>' +
+        '<input type="text" id="PriceCategoryId" value="' + PriceCategoryId + '" readonly>' +
+        '<br>' +
+        '<label for="">Perecent</label>' +
+        '<br>' +
+        '<input type="number" id="PriceCatPerecent" value="' + PriceCatPerecent + '">' +
+        '<br>' +
+        '<br>' +
+        '<button class="btn btn-success" onclick="PricecatSave(2)">Save</button>' +
+        '<button class="btn btn-danger" onclick="adminPriceCat()">Cancel</button>';
+
+    document.getElementById("results_dyn").innerHTML = elmtxt;
+
+}
+function PriceCatInsert() {
+    document.getElementById("results_dyn").innerHTML = '';
+    let elmtxt =
+
+        '<label for="">New price category Perecent</label>' +
+        '<br>' +
+        '<input type="number" id="PriceCatPerecent" value="">' +
+        '<br>' +
+        '<br>' +
+        '<button class="btn btn-success" onclick="PricecatSave(1)">Save</button>' +
+        '<button class="btn btn-danger" onclick="adminPriceCat()">Cancel</button>';
+
+    document.getElementById("results_dyn").innerHTML = elmtxt;
+
+}
+function PriceCatDelete(PriceCategoryId) {
+    let url = BaseUrl() + 'index.php/Pricecategory_ctl/pricecategory/PriceCategoryId/' + PriceCategoryId.toString();
+    var xhttp = new XMLHttpRequest();
+    xhttp.open('DELETE', url, true);
+    xhttp.onreadystatechange = function () {
+        if (xhttp.readyState == 4 && xhttp.status == 200) {
+            adminPriceCat();
+        }
+    };
+    xhttp.send();
+
+}
+
+function PricecatSave(mtdflag) {
+    let url = BaseUrl() + 'index.php/Pricecategory_ctl/pricecategory';
+
+    var data2 = {};
+    if (mtdflag == 2)
+        data2.PriceCategoryId = parseInt(document.getElementById('PriceCategoryId').value);
+    data2.PriceCatPerecent = parseFloat(document.getElementById('PriceCatPerecent').value);
+
+    var jsonData = JSON.stringify(data2);
+    var xhttp = new XMLHttpRequest();
+    if (mtdflag == 2)
+        xhttp.open('PUT', url, true);
+    else
+        xhttp.open('POST', url, true);
+    xhttp.onreadystatechange = function () {
+        if (xhttp.readyState == 4 && xhttp.status == 201) {
+            adminPriceCat();
+        }
+    };
+    //xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+    xhttp.send(jsonData);
+
+
+
+
+
+
 }
 // End of Price category functions
 function GetProducts() {
@@ -141,7 +314,7 @@ function GetProducts() {
                         ' </figure>';
                 }
             }
-            document.getElementById('myCarousel').innerHTML = data;
+            document.getElementById('products').innerHTML = data;
 
         }
     };

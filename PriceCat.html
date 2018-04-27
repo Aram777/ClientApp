@@ -16,19 +16,19 @@
     <h2>Animated Modal with Header and Footer</h2>
 
     <!-- Trigger/Open The Modal -->
-    <button id="myBtn">Open Modal</button>
+    <button id="myBtn" onclick="adminPriceCat()">Open Modal</button>
 
     <!-- The Modal -->
-    <div id="myModal" class="modalAdmin">
+    <div id="AdminPage" class="modalAdmin">
 
         <!-- Modal content -->
-        <div class="modalAdmin-content" id="mdlContentAdmin">
-            <div class="modalAdmin-header">
-                <span class="closeAdmin">&times;</span>
+        <div class="modalAdmin-content" id="AdminPageContent">
+            <div id="AdminPageHeader" class="modalAdmin-header">
+                <span id="adminclose" class="closeAdmin">&times;</span>
                 <h2>Price Category</h2>
             </div>
             <div class="modal-bodyAdmin">
-                <div id="results_dyn" style="margin-left: 30px;margin-top: 30px;text-align: left;">
+                <div id="results_dyn" style="overflow-y: scroll; margin-left: 30px;margin-top: 30px;text-align: left;">
 
 
 
@@ -38,7 +38,7 @@
 
     </div>
 
-    <script>
+    <!--     <script>
         // Get the modal
         var modal = document.getElementById('myModal');
 
@@ -69,6 +69,7 @@
         }
     </script>
 
+ -->
 </body>
 
 </html>

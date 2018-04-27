@@ -1,36 +1,51 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Page Title</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="new.css" />
-    <script src="main.js"></script>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Page Title</title>
+  <script src="jsFunction/main.js"></script>
+<script>
+  function delconf(){
+    var result = confirm("Want to delete?");
+  if (result) {
+  alert('ok');
+  }
+  }
+</script>
 
 </head>
+
 <body>
-    <figure class="snip1583">
-        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/331810/sample68.jpg" alt="sample68" />
-        <div class="icons"><a href="www.google.com"><i class="ion-android-cart"></i></a><a><i class="ion-card"></i></a></div>
-        <figcaption>
-          <h3>Wisteria Ravenclaw</h3>
-          <div class="price">$15.00</div>
-        </figcaption>
-      </figure>
-      <figure class="snip1583 hover"><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/331810/sample77.jpg" alt="sample77" />
-        <div class="icons"><a><i class="ion-android-cart"></i></a><a><i class="ion-android-star"></i></a><a><i class="ion-android-share-alt"></i></a></div>
-        <figcaption>
-          <h3>Ursula Gurnmeister</h3>
-          <div class="price">$89.00</div>
-        </figcaption>
-      </figure>
-      <figure class="snip1583"><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/331810/sample71.jpg" alt="sample71" />
-        <div class="icons"><a><i class="ion-android-cart"></i></a><a><i class="ion-android-star"></i></a><a><i class="ion-android-share-alt"></i></a></div>
-        <figcaption>
-          <h3>Ingredia Nutrisha</h3>
-          <div class="price">$19.00</div>
-        </figcaption>
-      </figure>
+  <h1>The onclick Event</h1>
+
+  <p>The onclick event is used to trigger a function when an element is clicked on.</p>
+
+  <p>Click the button to trigger a function that will output "Hello World" in a p element with id="demo".</p>
+
+  
+  <p id="demo"></p>
+
+  
+
+  <form id="PrcCatDataForm">
+    <label for="">Price category Id</label>
+    <br>
+    <input type="text" id="PriceCategoryId" value="2" readonly>
+    <br>
+    <label for="">Perecent</label>
+    <br>
+    <input type="number" id="PriceCatPerecent" value="14">
+    <br>
+    <br>
+
+  </form>
+  <button onclick="delconf()">Click me baba</button>
+  <br>
+  <div id="id0">
+
+  </div>
 </body>
+
 </html>
