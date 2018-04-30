@@ -32,7 +32,7 @@ function openModal(number) {
 function BaseUrl() {
     //return 'https://onlinetoy.azurewebsites.net/';
     //return 'http://localhost/OnlineShoppingProject/';
-    return 'http://www.students.oamk.fi/~t7abar00/';
+    return 'https://www.students.oamk.fi/~t7abar00/';
 }
 function userid() {
     return system_usrId;
