@@ -1,85 +1,50 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
+  <title>Bootstrap Example</title>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
-  <link rel="icon" href="logo.png" type="image/png">
-  <link rel="stylesheet" type="text/css" media="screen" href="css/main.css" />
-  <link rel="stylesheet" type="text/css" media="screen" href="css/base.css" />
-
-
-  <title>Toy Store</title>
-
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-    crossorigin="anonymous">
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-    crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-    crossorigin="anonymous"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-    crossorigin="anonymous"></script>
-
-  <script src="jsFunction/main.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
+<body style="height:1500px">
 
-<body onload="GetProducts();">
-  <div class="bgdiv" background="bg.jpg">
-    <div style="background-color: rgb(255, 255, 255, 0.5) !important; padding-bottom: 68px;">
-      <img class="float-left" src="logo.png" style="max-width:300px; display: inline;">
-      <nav class="pt-5 navbar navbar-expand-lg navbar-light" style="background-color: rgb(255, 255, 255, 0.5)  !important;">
-        <a class="navbar-brand" href="#"></a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-          aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
+<nav class="navbar navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+        <img class="float-left" src="images/logo.png" style="max-width:300px; display: inline;">
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav mr-auto myh4">
-            <li class="nav-item active">
-              <a class="nav-link" href="#">Home
-                <span class="sr-only">(current)</span>
-              </a>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false">
-                Toys
-              </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#">NEW IN</a>
-                <a class="dropdown-item" href="#">Top Rated</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="javascript:GetProducts()">View All</a>
-              </div>
-            </li>
-          </ul>
-          <div class="form-inline my-2 my-lg-0 myh4">
-            <input class="form-control" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-          </div>
-          <ul class="navbar-nav ml-auto myh4">
-            <li class="nav-item active">
-              <a class="nav-link" href="#">Login</a>
-            </li>
-            <li class="nav-item active">
-              <a class="nav-link" href="#">Register</a>
-            </li>
-            <li class="nav-item active">
-              <a class="nav-link" href="#">My Cart</a>
-            </li>
-          </ul>
-        </div>
-      </nav>
+<!--       <a class="navbar-brand" href="#">WebSiteName</a> -->
     </div>
-    <div id="myCarousel" class="carousel slide" data-ride="carousel">
-
-
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="#">Home</a></li>
+      <li><a href="#">Page 1</a></li>
+      <li><a href="#">Page 2</a></li>
+      <li><a href="#">Page 3</a></li>
+    </ul>
+  </div>
+</nav>
+  
+<div class="container" style="margin-top:50px">
+  <h3>Fixed Navbar</h3>
+  <div class="row">
+    <div class="col-md-4">
+      <p>A fixed navigation bar stays visible in a fixed position (top or bottom) independent of the page scroll.</p>
+      <p>A fixed navigation bar stays visible in a fixed position (top or bottom) independent of the page scroll.</p>    
+    </div>
+    <div class="col-md-4"> 
+      <p>A fixed navigation bar stays visible in a fixed position (top or bottom) independent of the page scroll.</p>
+      <p>A fixed navigation bar stays visible in a fixed position (top or bottom) independent of the page scroll.</p>
+    </div>
+    <div class="col-md-4"> 
+      <p>A fixed navigation bar stays visible in a fixed position (top or bottom) independent of the page scroll.</p>
+      <p>A fixed navigation bar stays visible in a fixed position (top or bottom) independent of the page scroll.</p> 
     </div>
   </div>
-  </div>
+</div>
+
+<h1>Scroll this page to see the effect</h1>
+
 </body>
-
 </html>

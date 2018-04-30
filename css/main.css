@@ -4,11 +4,12 @@ body {
   min-height: 100% !important;
   height: 100%;
 }
-
-.nextprev {
+.navbar-nav>li>a { padding-top: 10px; padding-bottom: 10px; }
+ .navbar-brand { padding: 10px 15px; } 
+/* .nextprev {
 
 }
-
+ */
 .nextprev a {
     text-decoration: none;
     display: inline-block;
@@ -113,7 +114,7 @@ footer .footer-info .footer-add-margin > ul {
 
 .carousel-item {
   height: 32rem;
-  background-image: url("../bg.jpg");
+   background-image: url("bg.jpg"); 
 }
 .carousel-item > img {
   height: 32rem;
@@ -284,3 +285,153 @@ footer .footer-info .footer-add-margin > ul {
   }
 }
 @media all and (max-width: 575px) { }
+
+/* Shopping cart style */
+
+
+.Itemimage {
+  float: left;
+  width: 18%;
+}
+.Itemdescription {
+  float: left;
+  width: 35%;
+}
+.Itemprice {
+  float: left;
+  width: 10%;
+}
+.Itemquantity {
+  float: left;
+  width: 10%;
+}
+.Itemremove {
+  float: left;
+  width: 10%;
+}
+.Productsprice {
+  float: left;
+  width: 14%;
+  text-align: right;
+}
+
+.group:before, .ShoppingCart:before, .Namecolumns:before, .Item:before, .Itemtotal:before, .group:after, .ShoppingCart:after, .Namecolumns:after, .Item:after, .Itemtotal:after {
+  content: '';
+  display: table;
+}
+.group:after, .ShoppingCart:after, .Namecolumns:after, .Item:after, .Itemtotal:after {
+  clear: both;
+}
+.group, .ShoppingCart, .Namecolumns, .Item, .Itemtotal {
+  zoom: 1;
+}
+
+.Item .Itemprice:before, .Item .Productsprice:before, .Totalvalue:before {
+  content: '$';
+}
+/*   
+body {
+  padding: 0px 30px 30px 20px;
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+  font-weight: 100;
+}
+h1 {
+  font-weight: 100;
+}
+label {
+  color: rgb(59, 29, 29);
+}
+
+*/  
+.ShoppingCart {
+  margin-top: -45px;
+}
+
+.Namecolumns label {
+  padding-bottom: 15px;
+  margin-bottom: 15px;
+  border-bottom: 1px solid rgb(138, 111, 111);
+}
+.Namecolumns .Itemimage, .Namecolumns .Itemdescription, .Namecolumns .Itemremove {
+  text-indent: -9999px;
+}
+
+.Item {
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgb(156, 122, 122);
+}
+.Item .Itemimage {
+  text-align: center;
+}
+.Item .Itemimage img {
+  width: 100px;
+}
+.Item .Itemdescription .Itemname {
+  margin-right: 20px;
+  font-family: "Arial Black", Gadget, sans-serif;
+}
+.Item .Itemdescription .Itemdetails {
+  margin: 5px 20px 5px 0;
+  line-height: 1.4em;
+}
+.Item .Itemquantity input {
+  width: 40px;
+}
+.Item .Removeitem {
+  border: 0;
+  padding: 4px 8px;
+  background-color: rgb(238, 136, 136);
+  color: rgb(240, 212, 212);
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+  font-size: 12px;
+  border-radius: 3px;
+}
+.Item .Removeitem:hover {
+  background-color: rgb(141, 68, 68);
+}
+
+.Total .Itemtotal {
+  float: right;
+  clear: both;
+  width: 100%;
+  margin-bottom: 10px;
+}
+.Total .Itemtotal label {
+  float: left;
+  clear: both;
+  width: 79%;
+  text-align: right;
+}
+.Total .Itemtotal .Totalvalue {
+  float: right;
+  width: 21%;
+  text-align: right;
+}
+.Total .Itemtotal-total {
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+}
+.Checkout {
+  float: right;
+  border: 0;
+  margin-top: 20px;
+  padding: 6px 25px;
+  background-color: rgb(139, 206, 139);
+  color: rgb(6, 95, 21);
+  font-size: 25px;
+  border-radius: 3px;
+}
+.Checkout:hover {
+  background-color: rgb(29, 4, 68);
+}
+.overlay {
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  z-index: 1;
+/*   top: 0;
+  left: 0;
+ */  /* overflow-x: hidden; */
+  transition: 0.5s;
+}
+/* end of shopping cart style */

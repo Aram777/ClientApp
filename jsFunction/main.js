@@ -1,27 +1,38 @@
-let usrId = 2;
+let system_usrId = 0;
+let system_usrname = '';
+let user_has_order = 0;
 //var baseurl = 'http://localhost/OnlineShoppingProject/';
 
-function PricecatSave1() {
+function openModal(number) {
+    var modal;
+    var btn;
+    var span;
+    if (number == 1) {
+        modal = document.getElementById('Login');
+        span = document.getElementById("logclosbut");
+    } else {
+        if (system_usrId > 0) {
 
-    let url = 'http://localhost/OnlineShoppingProject/index.php/Pricecategory_ctl/pricecategory/PriceCategoryId/9';
-    var xhttp = new XMLHttpRequest();
-    xhttp.open('DELETE', url, true);
-    xhttp.onreadystatechange = function () {
-        if (xhttp.readyState == 4 && xhttp.status == 200) {
-            document.getElementById("id0").innerHTML = xhttp.responseText;
         }
-    };
-    xhttp.send();
+        else {
+            modal = document.getElementById('RegisterModal')
+            span = document.getElementById("regclosbut");
+        }
+    }
+    modal.style.display = "block";
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
 
 }
 
 function BaseUrl() {
-    return 'https://onlinetoy.azurewebsites.net/';
-    //return 'http://localhost/OnlineShoppingProject/';
+    //return 'https://onlinetoy.azurewebsites.net/';
+    return 'http://localhost/OnlineShoppingProject/';
     //return 'http://www.students.oamk.fi/~t7abar00/';
 }
 function userid() {
-    return 2;
+    return system_usrId;
 }
 function showDataJsn(ctlName, resName, prmName, prmVal, fncName) {
     let url = BaseUrl() + 'index.php/' + ctlName + '/' + resName;
@@ -44,12 +55,31 @@ function showDataJsn(ctlName, resName, prmName, prmVal, fncName) {
 
 
 //Admin Functions
+function adminShoppingCart() {
+
+    document.getElementById("results_dyn").innerHTML = "";
+    document.getElementById("AdminPageHeader").innerHTML = "Shopping Cart";
+    document.getElementById("AdminPageContent").style.width = "100%";
+    document.getElementById("AdminPageContent").style.height = "100%";
+    modal = document.getElementById('AdminPage');
+
+    modal.classList.add("overlay");
+
+    span = document.getElementById('adminclose');
+    modal.style.display = "block";
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+    showDataJsn('Orders_ctl', 'userorders', 'SystemUsersId', userid(), ShoppingcartShow);
+}
+
 function adminPriceCat() {
     document.getElementById("results_dyn").innerHTML = "";
     document.getElementById("AdminPageHeader").innerHTML = "Price Category";
     document.getElementById("AdminPageContent").style.width = "50%";
     document.getElementById("AdminPageContent").style.height = "60%";
     modal = document.getElementById('AdminPage');
+    modal.classList.add("overlay");
 
     span = document.getElementById('adminclose');
     modal.style.display = "block";
@@ -57,7 +87,6 @@ function adminPriceCat() {
         modal.style.display = "none";
     }
     showDataJsn('Pricecategory_ctl', 'pricecategory', null, null, PriceCatShow);
-
 }
 function adminProductCat() {
     document.getElementById("results_dyn").innerHTML = "";
@@ -94,7 +123,7 @@ function ProdCatShow(jsonData) {
             jsonData[x].PrdCatDescription +
             '</td>' +
 
-            '<td> <a href="javascript:ProdCatEdit(' + jsonData[x].ProductsCategoryId + ',' + jsonData[x].PrdCatDescription + ');"> <button class="btn btn-primary" ' +
+            '<td> <a href="javascript:ProdCatEdit(' + jsonData[x].ProductsCategoryId + ',"' + jsonData[x].PrdCatDescription + '");"> <button class="btn btn-primary" ' +
             '><span class="glyphicon glyphicson-edit"></button></a></td>' +
             '<td> <a href="javascript:ProdCatDelete(' + jsonData[x].ProductsCategoryId + ');"> <button class="btn btn-primary" ' +
             enbBut +
@@ -141,14 +170,17 @@ function PriceCatInsert() {
 }
 function ProdCatDelete(ProductsCategoryId) {
     if (confirm("Are you sure to delete this record??")) {
-        let url = BaseUrl() + 'index.php/Productscategory_ctl/productscategory/ProductsCategoryId/' + ProductsCategoryId.toString();
+        let url = BaseUrl() + 'index.php/Productscategory_ctl/productscategorydel/ProductsCategoryId/' + ProductsCategoryId.toString();
         var xhttp = new XMLHttpRequest();
-        xhttp.open('DELETE', url, true);
+        xhttp.open('GET', url, true);
         xhttp.onreadystatechange = function () {
             if (xhttp.readyState == 4 && xhttp.status == 200) {
+                alert(xhttp.responseText);
                 adminProductCat();
             }
         };
+        //  xhttp.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+        //        xhttp.withCredentials = true;
         xhttp.send();
     }
 }
@@ -294,10 +326,10 @@ function GetProducts() {
                     '<figure class="snip1583">' +
                     '<img src="' + imgurl + jsonData[x].ProductPicture + '" alt="sample68" height="200" width="200"/>' +
                     '<div class="icons">' +
-                    ' <a href="javascript:addtcocart(' + jsonData[x].ProductsId + ', ' + jsonData[x].ProdFinalPrice + ');">' +
+                    ' <a title="Add to cart" href="javascript:addtcocart(' + jsonData[x].ProductsId + ',' + userid() + ');">' +
                     ' <i class="ion-android-cart"></i>' +
                     '</a>' +
-                    ' <a>' +
+                    ' <a title="Product Description">' +
                     '  <i class="ion-android-list"></i>' +
                     ' </a>' +
                     '</div>' +
@@ -326,36 +358,186 @@ function GetProducts() {
     };
     xhttp.send();
 }
-function addtcocart(prdId, prdPrice) {
+function addtcocart(ProductsId, UserId) {
     // alert('order not added');
-    var ordDate = new Date();
-    var geturl = BaseUrl() + 'index.php/Orders_ctl/orders';
+    var geturl = BaseUrl() + 'index.php/Orders_ctl/orderscart';
+    var orderdata = {};
+    orderdata.ProductsId = parseInt(ProductsId);
+    orderdata.SystemUsersId = parseInt(UserId);
+
+    var jsonData = JSON.stringify(orderdata);
     var xhttp = new XMLHttpRequest();
     xhttp.open('POST', geturl, true);
-    var formData = new FormData();
-    formData.append("SystemUsersId", userid());
-    formData.append("ProductsId", prdId);
-    formData.append("OrdersDate", ordDate);
-    formData.append("OrderStatus", 1);
-    formData.append("ProductRate", 1);
-    formData.append("OrderQuantity", 1);
-    formData.append("OrderPrice", prdPrice);
     xhttp.onreadystatechange = function () {
         if (xhttp.readyState == 4 && xhttp.status == 201) {
-            alert('order added');
-        } else {
-            alert('order not added');
+            alert('order already added');
         }
     };
-    xhttp.send(formData);
+    xhttp.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+    xhttp.send(jsonData);
+}
+//Shopping cart
+function ShoppingcartShow(jsonData) {
+    var imgurl = BaseUrl() + '/images/';
 
-    //alert(lg_urs_stat);
+    var totprc = 0
+    var data =
+        '<div id="myNav" class="overlay">'
+    '<div class="ShoppingCart">' +
+        '<div class="Namecolumns">' +
+        '<label class="Itemimage">Image</label>' +
+        '<label class="Itemdescription">Description of Products</label>' +
+        '<label class="Itemprice">Price</label>' +
+        '<label class="Itemquantity">Quantity</label>' +
+        '<label class="Itemremove">Remove</label>' +
+        '<label class="Productsprice">Total</label>' +
+        '</div>';
+
+
+    for (x in jsonData) {
+        totprc += jsonData[x].OrderPrice;
+        data +=
+
+            '<div class="Item">' +
+            '<div class="Itemimage">' +
+            '<img src="' + imgurl + jsonData[x].ProductPicture + '" height="200" width="200">' +
+            '</div>' +
+            '<div class="Itemdescription">' +
+            '<div class="Itemname">' + jsonData[x].ProductName + '</div>' +
+            '<p class="Itemdetails">' + jsonData[x].ProductDesc + '</p>' +
+            '</div>' +
+            '<div class="Itemprice">' + jsonData[x].OrderPrice + '</div>' +
+            '<div class="Itemquantity">' +
+            '<input type="number" value="1" min="1">' +
+            '</div>' +
+            '<div class="Itemremove">' +
+            '<button class="Removeitem" onclick="deletecart(' + jsonData[x].OrdersId + ')">' +
+            'Remove' +
+            '</button>' +
+            '</div>' +
+            '<div class="Productsprice">' + jsonData[x].OrderPrice * jsonData[x].OrderQuantity + '</div>' +
+            '</div>';
+
+    }
+    data +=
+        ' <div class="Total">' +
+        '<div class="Itemtotal">' +
+        '<label>Subtotal</label>' +
+        ' <div class="Totalvalue" id="Cartsubtotal"></div>' +
+        ' </div>' +
+        '<div class="Itemtotal">' +
+        '  <label>Tax (5%)</label>' +
+        ' <div class="Totalvalue" id="Carttax">3</div>' +
+        ' </div>' +
+        ' <div class="Itemtotal">' +
+        ' <label>Shipping</label>' +
+        ' <div class="Totalvalue" id="Cartshipping">10.00</div>' +
+        ' </div>' +
+        ' <div class="Itemtotal Itemtotal-Total">' +
+        ' <label>Grand Total</label>' +
+        ' <div class="Totalvalue" id="Carttotal">73</div>' +
+        '</div>' +
+        ' </div>' +
+
+        '<button class="Checkout">Checkout</button>' +
+        ' </div>' +
+
+        ' </div>';
+
+    document.getElementById("results_dyn").innerHTML = data;
+
+}
+//End of shopping cart  
+function loginuser(usreml, urspass, srcflg) {
+    if (srcflg == 0) {
+        usname = document.getElementById('inputEmail').value;
+        uspass = document.getElementById('inputPassword').value;
+    }
+    else {
+        usname = usreml;
+        uspass = urspass;
+
+    }
+    let url = BaseUrl() + 'index.php/Login_ctl/login?email=' + usname + '&password=' + uspass;
+    var xhttp = new XMLHttpRequest();
+    xhttp.open('GET', url, true);
+    xhttp.onreadystatechange = function () {
+        if (xhttp.readyState == 4 && xhttp.status == 200) {
+            var jsonResponse = JSON.parse(xhttp.responseText);
+            system_usrId = parseInt(jsonResponse["userId"]);
+            system_usrname = jsonResponse["username"];
+            user_has_order = jsonResponse["hasorder"];
+            setnavstat();
+        }
+    };
+
+    xhttp.send();
+}
+function logoutuser() {
+    let url = BaseUrl() + 'index.php/Login_ctl/Login_ctl/logout';
+    var xhttp = new XMLHttpRequest();
+    xhttp.open('GET', url, true);
+    xhttp.onreadystatechange = function () {
+        if (xhttp.readyState == 4 && xhttp.status == 200) {
+            let system_usrId = 0;
+            let system_usrname = '';
+            let user_has_order = 0;
+            setnavstat();
+        }
+    };
+
+    xhttp.send();
 }
 
+function setnavstat() {
+    if (system_usrId > 0) {
+        document.getElementById('Login').style.display = "none";
+        document.getElementById("LoginB").style.display = "none";
+        document.getElementById("RegisterB").innerText = "Logout";
+        document.getElementById('hiusrname').innerText = 'Hi ' + system_usrname;
+        if (user_has_order == 0) {
 
-function ProductCatEdit(prdcatId) {
-    alert(prdcatId);
+            document.getElementById('shopcart').style.color = "black";
+        }
+        else {
+            document.getElementById('shopcart').style.color = "#F18000";
+
+        }
+    }
+    else {
+
+        document.getElementById('Login').style.display = "block";
+        document.getElementById("LoginB").style.display = "block";
+        document.getElementById("RegisterB").innerText = "Log in";
+        document.getElementById('hiusrname').innerText = '';
+        document.getElementById('shopcart').style.color = "black";
+    }
+
 }
+function Registeruser() {
+    let url = BaseUrl() + 'index.php/Systemusers_ctl/systemusers';
+
+    var usrdata = {};
+    usrdata.UserFirstName = document.getElementById('UserFirstName').value;
+    usrdata.UserLastName = document.getElementById('UserLastName').value;
+    usrdata.UserEmail = document.getElementById('UserEmail').value;
+    usrdata.UserAddress = document.getElementById('UserAddress').value;
+    usrdata.UserPass = document.getElementById('UserPass').value;
+
+    var jsonData = JSON.stringify(usrdata);
+    var xhttp = new XMLHttpRequest();
+    xhttp.open('POST', url, true);
+    xhttp.onreadystatechange = function () {
+        if (xhttp.readyState == 4 && xhttp.status == 201) {
+            document.getElementById("RegisterModal").style.display = "none";
+            loginuser(usrdata.UserEmail, usrdata.UserPass, 1)
+        }
+    };
+    xhttp.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+    xhttp.send(jsonData);
+
+}
+
 
 
 
