@@ -1,8 +1,7 @@
 let system_usrId = 0;
 let system_usrname = '';
 let user_has_order = 0;
-//var baseurl = 'http://localhost/OnlineShoppingProject/';
-
+let isAdmin=1;
 function openModal(number) {
     var modal;
     var btn;
@@ -10,26 +9,30 @@ function openModal(number) {
     if (number == 1) {
         modal = document.getElementById('Login');
         span = document.getElementById("logclosbut");
+        modal.style.display = "block";
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
     } else {
         if (system_usrId > 0) {
-
+            logoutuser();
         }
         else {
             modal = document.getElementById('RegisterModal')
             span = document.getElementById("regclosbut");
+            modal.style.display = "block";
+            span.onclick = function () {
+                modal.style.display = "none";
+            }
         }
-    }
-    modal.style.display = "block";
-    span.onclick = function () {
-        modal.style.display = "none";
     }
 
 }
 
 function BaseUrl() {
     //return 'https://onlinetoy.azurewebsites.net/';
-    return 'http://localhost/OnlineShoppingProject/';
-    //return 'http://www.students.oamk.fi/~t7abar00/';
+    //return 'http://localhost/OnlineShoppingProject/';
+    return 'http://www.students.oamk.fi/~t7abar00/';
 }
 function userid() {
     return system_usrId;
@@ -56,21 +59,23 @@ function showDataJsn(ctlName, resName, prmName, prmVal, fncName) {
 
 //Admin Functions
 function adminShoppingCart() {
+    if (user_has_order > 0) {
 
-    document.getElementById("results_dyn").innerHTML = "";
-    document.getElementById("AdminPageHeader").innerHTML = "Shopping Cart";
-    document.getElementById("AdminPageContent").style.width = "100%";
-    document.getElementById("AdminPageContent").style.height = "100%";
-    modal = document.getElementById('AdminPage');
+        document.getElementById("results_dyn").innerHTML = "";
+        document.getElementById("AdminPageHeader").innerHTML = "Shopping Cart";
+        document.getElementById("AdminPageContent").style.width = "100%";
+        document.getElementById("AdminPageContent").style.height = "100%";
+        modal = document.getElementById('AdminPage');
 
-    modal.classList.add("overlay");
+        modal.classList.add("overlay");
 
-    span = document.getElementById('adminclose');
-    modal.style.display = "block";
-    span.onclick = function () {
-        modal.style.display = "none";
+        span = document.getElementById('adminclose');
+        modal.style.display = "block";
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+        showDataJsn('Orders_ctl', 'userorders', 'SystemUsersId', userid(), ShoppingcartShow);
     }
-    showDataJsn('Orders_ctl', 'userorders', 'SystemUsersId', userid(), ShoppingcartShow);
 }
 
 function adminPriceCat() {
@@ -311,7 +316,6 @@ function PricecatSave(mtdflag) {
 }
 // End of Price category functions
 function GetProducts() {
-    //   var baseurl = 'onlinetoy.azurewebsites.net/';
     var geturl = BaseUrl() + 'index.php/Products_ctl/products3';
     var imgurl = BaseUrl() + '/images/';
     var xhttp = new XMLHttpRequest();
@@ -467,31 +471,41 @@ function loginuser(usreml, urspass, srcflg) {
             system_usrId = parseInt(jsonResponse["userId"]);
             system_usrname = jsonResponse["username"];
             user_has_order = jsonResponse["hasorder"];
-            setnavstat();
+            isAdmin= jsonResponse["isAdmin"];
+            setnavstat(0);
         }
     };
 
     xhttp.send();
 }
 function logoutuser() {
-    let url = BaseUrl() + 'index.php/Login_ctl/Login_ctl/logout';
+    let url = BaseUrl() + 'index.php/Login_ctl/logout';
     var xhttp = new XMLHttpRequest();
     xhttp.open('GET', url, true);
     xhttp.onreadystatechange = function () {
         if (xhttp.readyState == 4 && xhttp.status == 200) {
-            let system_usrId = 0;
-            let system_usrname = '';
-            let user_has_order = 0;
-            setnavstat();
+            system_usrId = 0;
+            system_usrname = '';
+            user_has_order = 0;
+            isAdmin=1;
+            setnavstat(0);
         }
     };
 
     xhttp.send();
 }
 
-function setnavstat() {
+function setnavstat(flgfirst) {
     if (system_usrId > 0) {
-        document.getElementById('Login').style.display = "none";
+        if(isAdmin==0){
+            document.getElementById("navbarDropdown").style.display = "block";
+            
+        }
+        else{
+            document.getElementById("navbarDropdown").style.display = "none";
+
+        }
+        document.getElementById("Login").style.display = "none";
         document.getElementById("LoginB").style.display = "none";
         document.getElementById("RegisterB").innerText = "Logout";
         document.getElementById('hiusrname').innerText = 'Hi ' + system_usrname;
@@ -505,12 +519,13 @@ function setnavstat() {
         }
     }
     else {
-
-        document.getElementById('Login').style.display = "block";
+        document.getElementById("navbarDropdown").style.display = "none";
         document.getElementById("LoginB").style.display = "block";
-        document.getElementById("RegisterB").innerText = "Log in";
+        document.getElementById("RegisterB").innerText = "Register";
         document.getElementById('hiusrname').innerText = '';
         document.getElementById('shopcart').style.color = "black";
+        if (flgfirst == 1)
+            GetProducts();
     }
 
 }
