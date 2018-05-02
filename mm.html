@@ -2,50 +2,106 @@
 <html>
 
 <head>
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Page Title</title>
-  <script src="jsFunction/main.js"></script>
-<script>
-  function delconf(){
-    var result = confirm("Want to delete?");
-  if (result) {
-  alert('ok');
-  }
-  }
-</script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!--  <link href="css/main.css" rel="stylesheet"> -->
+    <script src="jsFunction/main.js"></script>
 
+    <style>
+        .adminpage {
+            margin-top: 0px;
+            margin-left: 0px;
+            margin-right: 0px;
+
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: rgb(53, 52, 50);
+
+            overflow-x: hidden;
+            transition: 0.5s;
+        }
+
+        .adminpage .closebtn {
+            position: absolute;
+            top: 20px;
+            right: 45px;
+            font-size: 60px;
+            color: black;
+        }
+
+        .adminul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #333;
+        }
+
+        .adminli {
+            float: left;
+        }
+
+        .adminlia {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        .adminlia:hover {
+            background-color: #111;
+        }
+    </style>
+    <script>
+
+        function openadminNav() {
+            document.getElementById("adminNav").style.width = "100%";
+        }
+
+        function closeadminNav() {
+            document.getElementById("adminNav").style.width = "0%";
+        }
+    </script>
 </head>
 
 <body>
-  <h1>The onclick Event</h1>
+    <button onclick="openNav()">open</button>
+    <div id="adminNav" class="adminpage">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeadminNav()">&times;</a>
+        <ul class="adminul">
+            <li class="adminli">
+                <a class="adminlia" href="#home">Products</a>
+            </li>
+            <li class="adminli">
+                <a class="adminlia" href="#news">Products Category</a>
+            </li>
+            <li class="adminli">
+                <a class="adminlia" href="#contact">Price Pategory</a>
+            </li>
+            <li class="adminli">
+                <a class="adminlia" href="#contact">Price Pategory</a>
+            </li>
+            <li class="adminli">
+                <a class="adminlia" href="#about">About</a>
+            </li>
+        </ul>
 
-  <p>The onclick event is used to trigger a function when an element is clicked on.</p>
 
-  <p>Click the button to trigger a function that will output "Hello World" in a p element with id="demo".</p>
 
-  
-  <p id="demo"></p>
+        <div id="adminpagedv">
+        </div>
 
-  
 
-  <form id="PrcCatDataForm">
-    <label for="">Price category Id</label>
-    <br>
-    <input type="text" id="PriceCategoryId" value="2" readonly>
-    <br>
-    <label for="">Perecent</label>
-    <br>
-    <input type="number" id="PriceCatPerecent" value="14">
-    <br>
-    <br>
+    </div>
 
-  </form>
-  <button onclick="delconf()">Click me baba</button>
-  <br>
-  <div id="id0">
 
-  </div>
+
 </body>
+
 
 </html>
